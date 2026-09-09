@@ -11,11 +11,15 @@ build/
 .ruff_cache/
 .coverage
 htmlcov/
-models/
-*.onnx
-*.zip
 .idea/
 .vscode/
 *.log
 config.toml
-_push*.json
+
+# Speech models stay on the machine. Never commit them.
+models/
+ggml-*.bin
+*.gguf
+*.onnx
+*.zip
+vosk-model*/

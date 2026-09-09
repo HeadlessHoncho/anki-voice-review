@@ -37,13 +37,15 @@ Say `show` before a grade. Anki rejects a grade while the question is still up; 
 
 ## Requirements
 
+This repo and the GitHub release are **source only**. Speech models are **not** published (`ggml-*.bin`, Vosk zips, Silero ONNX). They download to `%LOCALAPPDATA%\anki-voice-review\` (or your existing whisper.cpp folder) on first use.
+
 - Python 3.10+
 - Anki 2.1+ with [AnkiConnect](https://ankiweb.net/shared/info/2055492159) (add-on code `2055492159`)
 - A microphone
-- [whisper.cpp](https://github.com/ggml-org/whisper.cpp) `whisper-cli` on `PATH` or at `%USERPROFILE%\tools\whisper\whisper-cli.exe` (first run fetches `ggml-tiny.en.bin`)
-- Silero VAD ONNX is downloaded on first run
+- [whisper.cpp](https://github.com/ggml-org/whisper.cpp) `whisper-cli` on `PATH` or at `%USERPROFILE%\tools\whisper\whisper-cli.exe`
+- First run of `--stt tiny` fetches `ggml-tiny.en.bin` (~75 MB) and Silero VAD ONNX
 
-`--stt vosk` works without whisper.cpp (small English model, ~40 MB). `--stt large` uses a local `whisper-server` + `ggml-large-v3.bin` if you already have them.
+`--stt vosk` downloads the small English Vosk model (~40 MB) instead of whisper.cpp. `--stt large` uses a **local** `whisper-server` + `ggml-large-v3.bin` if you already have them; those files are not in this project.
 
 ## Install
 

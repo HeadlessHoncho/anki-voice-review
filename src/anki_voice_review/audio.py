@@ -204,24 +204,6 @@ def normalize_for_stt(
     return np.clip(x * gain, -1.0, 1.0).astype(np.float32)
 
 
-class AutoGain:
-    """Legacy per-frame AGC. Do not use on the live VAD stream."""
-
-    def __init__(self, target_rms: float = 0.08, max_gain: float = 25.0) -> None:
-        self.target_rms = target_rms
-        self.max_gain = max_gain
-        self.gain = 4.0
-
-    def apply(self, frame: np.ndarray) -> np.ndarray:
-        rms = _rms(frame)
-        if rms > 1e-5:
-            desired = min(self.target_rms / rms, self.max_gain)
-            self.gain = 0.9 * self.gain + 0.1 * desired
-        boosted = np.clip(frame * self.gain, -1.0, 1.0)
-        boosted = boosted - float(np.mean(boosted))
-        return boosted.astype(np.float32)
-
-
 def test_mic(spec: DeviceSpec = None, seconds: float = 8.0) -> int:
     """Print a live level meter so you can see whether talking moves it."""
     index = resolve_input_device(spec)

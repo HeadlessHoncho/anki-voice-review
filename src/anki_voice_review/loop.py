@@ -48,10 +48,12 @@ class BurstDetector:
 def build_stt(kind: str = "auto"):
     """kind: auto | large | tiny | vosk"""
     kind = (kind or "auto").lower()
-    large = find_large_v3_model()
-    server_exe = find_whisper_server()
     whisper_cli = find_whisper_cli()
-    if kind in {"auto", "large"} and large is not None and server_exe is not None:
+    if kind == "large":
+        large = find_large_v3_model()
+        server_exe = find_whisper_server()
+        if large is None or server_exe is None:
+            raise RuntimeError("large-v3 requested but whisper-server or ggml-large-v3.bin was not found")
         log.info("starting whisper.cpp large-v3 server (%s)", large)
         url = ensure_whisper_server(large, server_exe)
         log.info("STT: whisper.cpp large-v3 @ %s", url)
@@ -61,8 +63,8 @@ def build_stt(kind: str = "auto"):
         tiny = ensure_whisper_tiny_en(progress=log.info)
         log.info("STT: whisper.cpp tiny.en")
         return WhisperCppSTT(whisper_cli, tiny)
-    if kind == "large":
-        raise RuntimeError("large-v3 requested but whisper-server or ggml-large-v3.bin was not found")
+    if kind == "tiny":
+        raise RuntimeError("tiny.en requested but whisper-cli was not found")
     log.info("loading Vosk (open vocab, no command grammar)")
     vosk_path = ensure_vosk(progress=log.info)
     return VoskSTT(vosk_path, sample_rate=16000)
