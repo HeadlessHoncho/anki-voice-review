@@ -54,11 +54,12 @@ def anki_addons_dir() -> Path:
 class Settings:
     sample_rate: int = 16000
     frame_samples: int = 512
-    input_device: Optional[int] = None
+    input_device: Optional[int | str] = None
     min_burst_seconds: float = 0.25
     max_burst_seconds: float = 1.8
-    end_silence_seconds: float = 0.40
-    rearm_silence_seconds: float = 0.80
+    end_silence_seconds: float = 0.20
+    rearm_silence_seconds: float = 0.50
+    speech_pad_seconds: float = 0.30
     vad_threshold: float = 0.5
     anki_url: str = "http://127.0.0.1:8765"
     anki_key: Optional[str] = None
@@ -76,13 +77,19 @@ class Settings:
             max_burst_seconds=self.max_burst_seconds,
             end_silence_seconds=self.end_silence_seconds,
             rearm_silence_seconds=self.rearm_silence_seconds,
+            speech_pad_seconds=self.speech_pad_seconds,
         )
 
 
-def _as_optional_int(value: Any) -> Optional[int]:
+def _as_optional_device(value: Any) -> Optional[int | str]:
     if value is None or value == "":
         return None
-    return int(value)
+    if isinstance(value, int):
+        return value
+    text = str(value)
+    if text.isdigit():
+        return int(text)
+    return text
 
 
 def load_settings(path: Optional[Path] = None) -> Settings:
@@ -106,7 +113,7 @@ def _apply_toml(settings: Settings, data: dict[str, Any]) -> None:
     if "sample_rate" in audio:
         settings.sample_rate = int(audio["sample_rate"])
     if "device" in audio:
-        settings.input_device = _as_optional_int(audio["device"])
+        settings.input_device = _as_optional_device(audio["device"])
 
     gate = data.get("gate") or {}
     for name in (
@@ -114,6 +121,7 @@ def _apply_toml(settings: Settings, data: dict[str, Any]) -> None:
         "max_burst_seconds",
         "end_silence_seconds",
         "rearm_silence_seconds",
+        "speech_pad_seconds",
     ):
         if name in gate:
             setattr(settings, name, float(gate[name]))
