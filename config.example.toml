@@ -9,12 +9,16 @@
 [gate]
 # Commands are short. Anything that keeps going is treated as conversation
 # and never sent to speech recognition.
+# Values match Silero VAD / whisper.cpp command-word defaults:
+#   min_speech 250 ms, min_silence 200 ms, speech_pad 300 ms.
 # max_burst_seconds = 1.8
 # min_burst_seconds = 0.25
-# end_silence_seconds = 0.4
-# rearm_silence_seconds = 0.8
+# end_silence_seconds = 0.20
+# rearm_silence_seconds = 0.50
+# speech_pad_seconds = 0.30
 
 [vad]
+# Silero's documented "lazy" default. 0.3 is too sensitive on a live mic.
 # threshold = 0.5
 
 [anki]
