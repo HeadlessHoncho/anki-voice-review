@@ -15,6 +15,9 @@ SILERO_URL = (
 )
 VOSK_URL = "https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip"
 VOSK_DIRNAME = "vosk-model-small-en-us-0.15"
+WHISPER_TINY_EN_URL = (
+    "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-tiny.en.bin"
+)
 
 Progress = Optional[Callable[[str], None]]
 
@@ -66,6 +69,14 @@ def ensure_vosk(path: Optional[Path] = None, progress: Progress = None) -> Path:
         extracted.rename(dest)
     if not _vosk_ready(dest):
         raise RuntimeError(f"Vosk model missing expected files in {dest}")
+    return dest
+
+
+def ensure_whisper_tiny_en(path: Optional[Path] = None, progress: Progress = None) -> Path:
+    dest = path or (cache_dir() / "ggml-tiny.en.bin")
+    if dest.is_file() and dest.stat().st_size > 20_000_000:
+        return dest
+    _download(WHISPER_TINY_EN_URL, dest, progress)
     return dest
 
 

@@ -14,14 +14,19 @@ def test_exact_phrase_match():
     assert matcher.match("  Easy. ").name == "easy"
 
 
-def test_rejects_superstrings():
+def test_rejects_superstrings_and_near_misses():
     matcher = CommandMatcher()
     assert matcher.match("good job") is None
     assert matcher.match("show answer") is None
     assert matcher.match("this is good") is None
+    assert matcher.match("the show") is None
+    assert matcher.match("sure") is None
+    assert matcher.match("heart") is None
     assert matcher.match("unk") is None
     assert matcher.match("") is None
     assert matcher.match("pizza") is None
+    assert matcher.match("ah") is None
+    assert matcher.match("her") is None
 
 
 def test_aliases():

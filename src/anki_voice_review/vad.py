@@ -17,7 +17,7 @@ class SileroVAD:
     def __init__(
         self,
         model_path: str | Path,
-        threshold: float = 0.5,
+        threshold: float = 0.3,
         sample_rate: int = 16000,
     ) -> None:
         if sample_rate not in (8000, 16000):
