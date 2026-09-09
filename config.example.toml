@@ -1,0 +1,31 @@
+# Copy to config.toml in this directory, or to:
+#   Windows: %LOCALAPPDATA%\anki-voice-review\config.toml
+#   macOS/Linux: ~/.config/anki-voice-review/config.toml
+
+[audio]
+# sample_rate = 16000
+# device = null          # system default; run --list-devices to see ids
+
+[gate]
+# Commands are short. Anything that keeps going is treated as conversation
+# and never sent to speech recognition.
+# max_burst_seconds = 1.8
+# min_burst_seconds = 0.25
+# end_silence_seconds = 0.4
+# rearm_silence_seconds = 0.8
+
+[vad]
+# threshold = 0.5
+
+[anki]
+url = "http://127.0.0.1:8765"
+# key = ""               # only if you set an AnkiConnect API key
+
+# Whole-phrase aliases. The default is the six review words and nothing else.
+# [commands]
+# show = ["show", "show answer"]
+# again = ["again"]
+# hard = ["hard"]
+# good = ["good"]
+# easy = ["easy"]
+# undo = ["undo"]
