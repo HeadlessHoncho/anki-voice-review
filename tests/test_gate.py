@@ -76,6 +76,39 @@ def test_click_is_too_short():
     assert gate.state is GateState.IDLE
 
 
+def test_default_min_burst_accepts_short_command_word():
+    """Silero default min_speech is 250 ms; 'show' is often ~300–400 ms."""
+    cfg = GateConfig(sample_rate=SR, min_burst_seconds=0.25, end_silence_seconds=0.20)
+    gate = ShortBurstGate(cfg)
+    speech_frames = int(0.32 / DT)
+    _feed(gate, True, speech_frames)
+    event = _feed(gate, False, int(0.20 / DT) + 1)
+    assert event is not None
+    assert event.kind == "accepted"
+    assert event.duration_seconds >= 0.25
+
+
+def test_preroll_and_pad_are_not_counted_in_duration():
+    pad = 0.128  # 4 frames at 512/16000
+    cfg = GateConfig(
+        sample_rate=SR,
+        min_burst_seconds=0.2,
+        max_burst_seconds=1.8,
+        end_silence_seconds=0.32,
+        speech_pad_seconds=pad,
+    )
+    gate = ShortBurstGate(cfg)
+    _feed(gate, False, 20)
+    speech_frames = int(0.5 / DT)
+    _feed(gate, True, speech_frames)
+    event = _feed(gate, False, int(0.32 / DT) + 2)
+    assert event is not None
+    assert event.kind == "accepted"
+    assert abs(event.duration_seconds - speech_frames * DT) < DT * 2
+    assert event.audio is not None
+    assert len(event.audio) > speech_frames * FRAME
+
+
 def test_command_after_aborted_conversation():
     cfg = GateConfig(
         sample_rate=SR,
