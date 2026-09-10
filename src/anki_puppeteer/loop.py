@@ -6,13 +6,13 @@ from typing import Optional
 
 import numpy as np
 
-from anki_voice_review.anki import AnkiClient, AnkiConnectError
-from anki_voice_review.audio import StreamTo16k, list_input_devices, normalize_for_stt, resolve_input_device
-from anki_voice_review.commands import COMMAND_NAMES, CommandMatcher
-from anki_voice_review.config import Settings
-from anki_voice_review.gate import GateEvent, ShortBurstGate
-from anki_voice_review.models import ensure_silero, ensure_vosk, ensure_whisper_tiny_en
-from anki_voice_review.stt import (
+from anki_puppeteer.anki import AnkiClient, AnkiConnectError
+from anki_puppeteer.audio import StreamTo16k, list_input_devices, normalize_for_stt, resolve_input_device
+from anki_puppeteer.commands import COMMAND_NAMES, CommandMatcher
+from anki_puppeteer.config import Settings
+from anki_puppeteer.gate import GateEvent, ShortBurstGate
+from anki_puppeteer.models import ensure_silero, ensure_vosk, ensure_whisper_tiny_en
+from anki_puppeteer.stt import (
     VoskSTT,
     WhisperCppSTT,
     WhisperServerSTT,
@@ -21,9 +21,9 @@ from anki_voice_review.stt import (
     find_whisper_cli,
     find_whisper_server,
 )
-from anki_voice_review.vad import SileroVAD
+from anki_puppeteer.vad import SileroVAD
 
-log = logging.getLogger("anki_voice_review")
+log = logging.getLogger("anki_puppeteer")
 
 __all__ = ["list_input_devices", "run", "build_stt", "decode_16k", "BurstDetector"]
 
@@ -133,7 +133,7 @@ def run(settings: Settings, stt_kind: str = "auto") -> int:
         except AnkiConnectError as exc:
             log.error("%s", exc)
             log.error(
-                "Install the add-on (code 2055492159) or run: anki-voice-review --install-ankiconnect"
+                "Install the add-on (code 2055492159) or run: anki-puppeteer --install-ankiconnect"
             )
             return 2
         log.info("AnkiConnect ok (version %s)", version)

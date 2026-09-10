@@ -1,4 +1,4 @@
-from anki_voice_review.commands import CommandMatcher, normalize
+from anki_puppeteer.commands import CommandMatcher, normalize
 
 
 def test_normalize_strips_punctuation_and_case():

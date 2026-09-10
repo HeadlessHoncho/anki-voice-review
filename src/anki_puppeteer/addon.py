@@ -5,8 +5,8 @@ import shutil
 from pathlib import Path
 from typing import Callable, Optional
 
-from anki_voice_review.config import anki_addons_dir
-from anki_voice_review.models import extract_zip_to_temp
+from anki_puppeteer.config import anki_addons_dir
+from anki_puppeteer.models import extract_zip_to_temp
 
 ANKICONNECT_ID = "2055492159"
 ANKICONNECT_ZIP = (

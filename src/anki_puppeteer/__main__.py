@@ -5,19 +5,19 @@ import logging
 import sys
 from pathlib import Path
 
-from anki_voice_review import __version__
-from anki_voice_review.addon import install_ankiconnect
-from anki_voice_review.anki import AnkiClient, AnkiConnectError
-from anki_voice_review.audio import list_input_devices, test_mic
-from anki_voice_review.config import cache_dir, load_settings
-from anki_voice_review.loop import build_stt, run
-from anki_voice_review.models import ensure_silero, ensure_vosk
-from anki_voice_review.selftest import run_self_test, run_wav
+from anki_puppeteer import __version__
+from anki_puppeteer.addon import install_ankiconnect
+from anki_puppeteer.anki import AnkiClient, AnkiConnectError
+from anki_puppeteer.audio import list_input_devices, test_mic
+from anki_puppeteer.config import cache_dir, load_settings
+from anki_puppeteer.loop import build_stt, run
+from anki_puppeteer.models import ensure_silero, ensure_vosk
+from anki_puppeteer.selftest import run_self_test, run_wav
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        prog="anki-voice-review",
+        prog="anki-puppeteer",
         description=(
             "Review Anki cards by voice while another app is focused. "
             "Local VAD + short-burst gate + whisper.cpp + exact whitelist + AnkiConnect."
@@ -99,7 +99,7 @@ def main(argv: list[str] | None = None) -> int:
     fh = logging.FileHandler(log_path, encoding="utf-8")
     fh.setFormatter(fmt)
     root.addHandler(fh)
-    log = logging.getLogger("anki_voice_review")
+    log = logging.getLogger("anki_puppeteer")
 
     if args.list_devices:
         print(list_input_devices())

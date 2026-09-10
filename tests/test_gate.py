@@ -1,6 +1,6 @@
 import numpy as np
 
-from anki_voice_review.gate import GateConfig, GateState, ShortBurstGate
+from anki_puppeteer.gate import GateConfig, GateState, ShortBurstGate
 
 SR = 16000
 FRAME = 512

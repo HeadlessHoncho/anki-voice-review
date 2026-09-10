@@ -1,4 +1,4 @@
-# anki-voice-review
+# Anki Puppeteer
 
 Review Anki cards by voice **while another app is focused**. No cloud speech API, and no keystrokes sent to whichever window happens to be in front.
 
@@ -37,7 +37,7 @@ Say `show` before a grade. Anki rejects a grade while the question is still up; 
 
 ## Requirements
 
-This repo and the GitHub release are **source only**. Speech models are **not** published (`ggml-*.bin`, Vosk zips, Silero ONNX). They download to `%LOCALAPPDATA%\anki-voice-review\` (or your existing whisper.cpp folder) on first use.
+This repo and the GitHub release are **source only**. Speech models are **not** published (`ggml-*.bin`, Vosk zips, Silero ONNX). They download to `%LOCALAPPDATA%\anki-puppeteer\` (or your existing whisper.cpp folder) on first use.
 
 - Python 3.10+
 - Anki 2.1+ with [AnkiConnect](https://ankiweb.net/shared/info/2055492159) (add-on code `2055492159`)
@@ -50,7 +50,7 @@ This repo and the GitHub release are **source only**. Speech models are **not** 
 ## Install
 
 ```bash
-python -m pip install git+https://github.com/HeadlessHoncho/anki-voice-review.git
+python -m pip install git+https://github.com/HeadlessHoncho/anki-puppeteer.git
 ```
 
 From a clone:
@@ -62,7 +62,7 @@ python -m pip install -e ".[dev]"
 Install AnkiConnect, then restart Anki:
 
 ```bash
-anki-voice-review --install-ankiconnect
+anki-puppeteer --install-ankiconnect
 ```
 
 Or in Anki: Tools → Add-ons → Get Add-ons → `2055492159`.
@@ -72,24 +72,24 @@ Or in Anki: Tools → Add-ons → Get Add-ons → `2055492159`.
 Start Anki, open a deck, start reviewing. Then:
 
 ```bash
-anki-voice-review --stt tiny
+anki-puppeteer --stt tiny
 ```
 
 Useful flags:
 
 ```bash
-anki-voice-review --dry-run                 # recognize only; do not call Anki
-anki-voice-review --check                   # ping AnkiConnect
-anki-voice-review --list-devices            # microphone indices
-anki-voice-review --device realtek          # pick a mic by name substring
-anki-voice-review --test-mic                # live level meter
-anki-voice-review --self-test --stt tiny    # Windows TTS samples through the same gate/STT/whitelist
-anki-voice-review --wav show.wav --expect show --stt tiny
-anki-voice-review --stt tiny|large|vosk|auto
-anki-voice-review -c config.toml
+anki-puppeteer --dry-run                 # recognize only; do not call Anki
+anki-puppeteer --check                   # ping AnkiConnect
+anki-puppeteer --list-devices            # microphone indices
+anki-puppeteer --device realtek          # pick a mic by name substring
+anki-puppeteer --test-mic                # live level meter
+anki-puppeteer --self-test --stt tiny    # Windows TTS samples through the same gate/STT/whitelist
+anki-puppeteer --wav show.wav --expect show --stt tiny
+anki-puppeteer --stt tiny|large|vosk|auto
+anki-puppeteer -c config.toml
 ```
 
-Copy `config.example.toml` to `config.toml` (or `%LOCALAPPDATA%\anki-voice-review\config.toml` on Windows) to change burst length, VAD threshold, AnkiConnect URL, or extra spoken aliases.
+Copy `config.example.toml` to `config.toml` (or `%LOCALAPPDATA%\anki-puppeteer\config.toml` on Windows) to change burst length, VAD threshold, AnkiConnect URL, or extra spoken aliases.
 
 Gate defaults follow Silero VAD / whisper.cpp: threshold `0.5`, min speech 250 ms, end silence 200 ms, 300 ms speech pad. VAD runs on raw audio; a clip is normalized only after the gate accepts it.
 

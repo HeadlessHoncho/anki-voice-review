@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from anki_voice_review.config import load_settings
+from anki_puppeteer.config import load_settings
 
 
 def test_toml_overrides(tmp_path: Path):

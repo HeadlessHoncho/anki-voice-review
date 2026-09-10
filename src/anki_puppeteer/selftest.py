@@ -6,12 +6,12 @@ from pathlib import Path
 
 import numpy as np
 
-from anki_voice_review.audio import load_wav_mono_16k
-from anki_voice_review.commands import COMMAND_NAMES
-from anki_voice_review.config import Settings, cache_dir
-from anki_voice_review.loop import build_stt, decode_16k
+from anki_puppeteer.audio import load_wav_mono_16k
+from anki_puppeteer.commands import COMMAND_NAMES
+from anki_puppeteer.config import Settings, cache_dir
+from anki_puppeteer.loop import build_stt, decode_16k
 
-log = logging.getLogger("anki_voice_review")
+log = logging.getLogger("anki_puppeteer")
 
 _COMMANDS = list(COMMAND_NAMES)
 _NEGATIVES = ("pizza please", "hello there")

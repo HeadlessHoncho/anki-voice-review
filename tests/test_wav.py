@@ -3,9 +3,9 @@ from pathlib import Path
 
 import numpy as np
 
-from anki_voice_review.audio import load_wav_mono_16k, normalize_for_stt
-from anki_voice_review.config import Settings
-from anki_voice_review.loop import decode_16k
+from anki_puppeteer.audio import load_wav_mono_16k, normalize_for_stt
+from anki_puppeteer.config import Settings
+from anki_puppeteer.loop import decode_16k
 
 
 class FakeSTT:
@@ -68,7 +68,7 @@ def _speech_audio(seconds: float = 0.8) -> np.ndarray:
 
 def test_decode_known_phrase_matches_command(monkeypatch):
     monkeypatch.setattr(
-        "anki_voice_review.vad.SileroVAD.is_speech",
+        "anki_puppeteer.vad.SileroVAD.is_speech",
         lambda self, frame: float(np.mean(frame * frame)) ** 0.5 > 0.05,
     )
     stt = FakeSTT("Show.")
@@ -81,7 +81,7 @@ def test_decode_known_phrase_matches_command(monkeypatch):
 
 def test_decode_rejects_non_command_transcript(monkeypatch):
     monkeypatch.setattr(
-        "anki_voice_review.vad.SileroVAD.is_speech",
+        "anki_puppeteer.vad.SileroVAD.is_speech",
         lambda self, frame: float(np.mean(frame * frame)) ** 0.5 > 0.05,
     )
     stt = FakeSTT("pizza please")

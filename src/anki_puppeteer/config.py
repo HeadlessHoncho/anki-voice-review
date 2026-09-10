@@ -6,13 +6,17 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Optional
 
-from anki_voice_review.commands import DEFAULT_PHRASES
-from anki_voice_review.gate import GateConfig
+from anki_puppeteer.commands import DEFAULT_PHRASES
+from anki_puppeteer.gate import GateConfig
 
 if sys.version_info >= (3, 11):
     import tomllib
 else:
     import tomli as tomllib
+
+
+_APP_DIR = "anki-puppeteer"
+_LEGACY_DIR = "anki-voice-review"
 
 
 def default_config_path() -> Path:
@@ -21,21 +25,31 @@ def default_config_path() -> Path:
         return local
     if os.name == "nt":
         base = Path(os.environ.get("LOCALAPPDATA", str(Path.home() / "AppData" / "Local")))
-        return base / "anki-voice-review" / "config.toml"
+        new = base / _APP_DIR / "config.toml"
+        old = base / _LEGACY_DIR / "config.toml"
+        if old.is_file() and not new.is_file():
+            return old
+        return new
     xdg = os.environ.get("XDG_CONFIG_HOME")
-    if xdg:
-        return Path(xdg) / "anki-voice-review" / "config.toml"
-    return Path.home() / ".config" / "anki-voice-review" / "config.toml"
+    base = Path(xdg) if xdg else Path.home() / ".config"
+    new = base / _APP_DIR / "config.toml"
+    old = base / _LEGACY_DIR / "config.toml"
+    if old.is_file() and not new.is_file():
+        return old
+    return new
 
 
 def cache_dir() -> Path:
     if os.name == "nt":
         base = Path(os.environ.get("LOCALAPPDATA", str(Path.home() / "AppData" / "Local")))
-        return base / "anki-voice-review"
-    xdg = os.environ.get("XDG_CACHE_HOME")
-    if xdg:
-        return Path(xdg) / "anki-voice-review"
-    return Path.home() / ".cache" / "anki-voice-review"
+    else:
+        xdg = os.environ.get("XDG_CACHE_HOME")
+        base = Path(xdg) if xdg else Path.home() / ".cache"
+    new = base / _APP_DIR
+    old = base / _LEGACY_DIR
+    if old.is_dir() and not new.exists():
+        return old
+    return new
 
 
 def anki_addons_dir() -> Path:
@@ -60,7 +74,7 @@ class Settings:
     end_silence_seconds: float = 0.20
     rearm_silence_seconds: float = 0.50
     speech_pad_seconds: float = 0.30
-    vad_threshold: float = 0.5
+    vad_threshold: float = 0.4
     anki_url: str = "http://127.0.0.1:8765"
     anki_key: Optional[str] = None
     phrases: dict[str, tuple[str, ...]] = field(

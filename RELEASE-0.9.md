@@ -1,4 +1,4 @@
-Working live listener on the analog jack mic.
+Anki Puppeteer 0.9 — working live listener on the analog jack mic.
 
 ## What works
 
@@ -17,7 +17,7 @@ You provide (or let first run download) the models on the machine:
 - Anki 2.1+ with [AnkiConnect](https://ankiweb.net/shared/info/2055492159) (add-on code `2055492159`)
 - A microphone
 - [whisper.cpp](https://github.com/ggml-org/whisper.cpp) `whisper-cli` on `PATH` or at `%USERPROFILE%\tools\whisper\whisper-cli.exe`
-- First `--stt tiny` run downloads `ggml-tiny.en.bin` (~75 MB) and Silero VAD ONNX into `%LOCALAPPDATA%\anki-voice-review\`
+- First `--stt tiny` run downloads `ggml-tiny.en.bin` (~75 MB) and Silero VAD ONNX into `%LOCALAPPDATA%\anki-puppeteer\`
 
 `--stt vosk` downloads the small English Vosk model (~40 MB) instead of using whisper.cpp.
 `--stt large` uses a **local** `whisper-server` + `ggml-large-v3.bin` if you already have them; those files are not in this repo or this release.
@@ -25,6 +25,6 @@ You provide (or let first run download) the models on the machine:
 ## Install
 
 ```bash
-python -m pip install git+https://github.com/HeadlessHoncho/anki-voice-review.git@v0.9.0
-anki-voice-review --stt tiny
+python -m pip install git+https://github.com/HeadlessHoncho/anki-puppeteer.git@v0.9.0
+anki-puppeteer --stt tiny
 ```

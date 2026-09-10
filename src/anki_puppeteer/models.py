@@ -7,7 +7,7 @@ import zipfile
 from pathlib import Path
 from typing import Callable, Optional
 
-from anki_voice_review.config import cache_dir
+from anki_puppeteer.config import cache_dir
 
 SILERO_URL = (
     "https://github.com/snakers4/silero-vad/raw/master/"
@@ -32,7 +32,7 @@ def _download(url: str, dest: Path, progress: Progress = None) -> None:
     tmp = dest.with_suffix(dest.suffix + ".part")
     _log(progress, f"downloading {url}")
     req = urllib.request.Request(
-        url, headers={"User-Agent": "anki-voice-review/0.1"}
+        url, headers={"User-Agent": "anki-puppeteer/0.9"}
     )
     with urllib.request.urlopen(req, timeout=120) as resp, tmp.open("wb") as out:
         shutil.copyfileobj(resp, out)
@@ -82,7 +82,7 @@ def ensure_whisper_tiny_en(path: Optional[Path] = None, progress: Progress = Non
 
 def extract_zip_to_temp(url: str, progress: Progress = None) -> Path:
     """Download a zip and extract it to a new temporary directory."""
-    tmpdir = Path(tempfile.mkdtemp(prefix="anki-voice-review-"))
+    tmpdir = Path(tempfile.mkdtemp(prefix="anki-puppeteer-"))
     zip_path = tmpdir / "download.zip"
     _download(url, zip_path, progress)
     with zipfile.ZipFile(zip_path) as zf:

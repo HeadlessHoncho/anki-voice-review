@@ -15,6 +15,8 @@ from typing import Optional, Sequence
 
 import numpy as np
 
+from anki_puppeteer.config import cache_dir
+
 WHISPER_SERVER_PORT = 8178
 
 
@@ -80,7 +82,7 @@ def ensure_whisper_server(
         return url
     port = WHISPER_SERVER_PORT
     if log_path is None:
-        log_path = Path(os.environ.get("LOCALAPPDATA", str(Path.home()))) / "anki-voice-review" / "whisper-server.log"
+        log_path = cache_dir() / "whisper-server.log"
     log_path.parent.mkdir(parents=True, exist_ok=True)
     log_fh = open(log_path, "ab", buffering=0)
     subprocess.Popen(
@@ -122,7 +124,7 @@ class WhisperServerSTT:
 
     def transcribe_candidates(self, audio: np.ndarray, sample_rate: int = 16000) -> list[str]:
         pcm = _to_pcm16(audio)
-        with tempfile.TemporaryDirectory(prefix="anki-voice-") as tmp:
+        with tempfile.TemporaryDirectory(prefix="anki-puppeteer-") as tmp:
             wav_path = Path(tmp) / "clip.wav"
             _write_wav(wav_path, pcm, sample_rate)
             wav_bytes = wav_path.read_bytes()
@@ -177,7 +179,7 @@ class WhisperCppSTT:
 
     def transcribe_candidates(self, audio: np.ndarray, sample_rate: int = 16000) -> list[str]:
         pcm = _to_pcm16(audio)
-        with tempfile.TemporaryDirectory(prefix="anki-voice-") as tmp:
+        with tempfile.TemporaryDirectory(prefix="anki-puppeteer-") as tmp:
             wav_path = Path(tmp) / "clip.wav"
             _write_wav(wav_path, pcm, sample_rate)
             proc = subprocess.run(

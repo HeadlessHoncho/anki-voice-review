@@ -1,6 +1,6 @@
 # Copy to config.toml in this directory, or to:
-#   Windows: %LOCALAPPDATA%\anki-voice-review\config.toml
-#   macOS/Linux: ~/.config/anki-voice-review/config.toml
+#   Windows: %LOCALAPPDATA%\anki-puppeteer\config.toml
+#   macOS/Linux: ~/.config/anki-puppeteer/config.toml
 
 [audio]
 # sample_rate = 16000
@@ -18,8 +18,9 @@
 # speech_pad_seconds = 0.30
 
 [vad]
-# Silero's documented "lazy" default. 0.3 is too sensitive on a live mic.
-# threshold = 0.5
+# Speech probability to start a burst. 0.5 is Silero's default; 0.4 picks up
+# quieter/shorter commands. 0.3 is usually too jumpy on a live mic.
+# threshold = 0.4
 
 [anki]
 url = "http://127.0.0.1:8765"

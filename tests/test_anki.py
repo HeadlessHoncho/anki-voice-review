@@ -4,7 +4,7 @@ from threading import Thread
 
 import pytest
 
-from anki_voice_review.anki import AnkiClient, AnkiConnectError
+from anki_puppeteer.anki import AnkiClient, AnkiConnectError
 
 
 class _Handler(BaseHTTPRequestHandler):
